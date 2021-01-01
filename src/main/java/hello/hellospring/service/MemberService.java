@@ -2,7 +2,6 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class MemberService {
     // 회원가입
     public Long join(Member member) {
         // 중복회원 배제
-        //Optional<Member> result = memberRepository.findByName(member.getName());
+        // Optional<Member> result = memberRepository.findByName(member.getName());
         validateDuplicateMember(member); // 커맨드+옵션+m 을 눌러서 아래 validateDuplicateMember 메소드를 리팩토링함
         memberRepository.save(member);
         return member.getId();
