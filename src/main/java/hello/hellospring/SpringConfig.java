@@ -1,32 +1,31 @@
 package hello.hellospring;
 
-import hello.hellospring.repository.JdbcMemberRepository;
-import hello.hellospring.repository.JdbcTempleteMemberRepository;
-import hello.hellospring.repository.MemberRepository;
-import hello.hellospring.repository.MemoryMemberRepository;
+import hello.hellospring.repository.*;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
 @Configuration
 public class SpringConfig {
 
-    private DataSource dataSource;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public SpringConfig(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Bean
     public MemberService memberService() {
-        return new MemberService(memberRepository());
+        return new MemberService(memberRepository);
     }
 
-    @Bean
+/*    @Bean
     public MemberRepository memberRepository() {
         // 메모리에 저장하는 테스트용
         //return new MemoryMemberRepository();
@@ -35,7 +34,10 @@ public class SpringConfig {
 //        return new JdbcMemberRepository(dataSource);
 
         // JdbcTemplate
-        return new JdbcTempleteMemberRepository(dataSource);
-    }
+//        return new JdbcTempleteMemberRepository(dataSource);
+        // JPA
+        return new JpaMemberRepository(em);
+
+    }*/
 
 }
