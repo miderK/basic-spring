@@ -24,9 +24,18 @@ public class MemberService {
     public Long join(Member member) {
         // 중복회원 배제
         // Optional<Member> result = memberRepository.findByName(member.getName());
-        validateDuplicateMember(member); // 커맨드+옵션+m 을 눌러서 아래 validateDuplicateMember 메소드를 리팩토링함
-        memberRepository.save(member);
-        return member.getId();
+        long start = System.currentTimeMillis();
+
+        try {
+            validateDuplicateMember(member); // 중복회원검증
+            memberRepository.save(member);
+            return member.getId();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join() 시간 = " + timeMs + "ms");
+        }
+
     }
 
     private void validateDuplicateMember(Member member) {
@@ -38,7 +47,17 @@ public class MemberService {
 
     // 전체 회원 조회
     public List<Member> findMember() {
-        return memberRepository.findAll();
+        long start = System.currentTimeMillis();
+
+        try {
+            return memberRepository.findAll();
+        } finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("findMembers() 시간 = "+timeMs + "ms");
+        }
+
+
     }
 
     public Optional<Member> findOne(Long memberId) {
